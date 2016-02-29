@@ -1,9 +1,17 @@
-module Login where
+module Login (initLogin) where
 
 type Login     = String
 type Password  = String
 type AvatarURL = String
 type UserId    = Integer
+type Prefix    = String
+
+
+obtainLogin :: UserId -> (Prefix -> String)
+obtainLogin userId =
+  loginStorage "denis"
+  where
+    loginStorage = \login prefix = prefix ++ ": " ++ login
 
 
 userInfo :: Login -> Password -> AvatarURL -> UserId -> String
@@ -14,10 +22,10 @@ userInfo login password avatarURL userId =
   "\n avatar URL: " ++ avatarURL
 
 
-type EmptyInfo       = Login -> Password -> AvatarURL -> UserId -> String
-type WithLogin       =          Password -> AvatarURL -> UserId -> String
-type AndWithPassword =                      AvatarURL -> UserId -> String
-type AndWithAvatarURL =                                  UserId -> String
+type EmptyInfo        = Login -> Password -> AvatarURL -> UserId -> String
+type WithLogin        =          Password -> AvatarURL -> UserId -> String
+type AndWithPassword  =                      AvatarURL -> UserId -> String
+type AndWithAvatarURL =                                   UserId -> String
 
 
 storeLoginIn :: EmptyInfo -> UserId -> WithLogin
@@ -35,7 +43,8 @@ storeAvatarURLIn infoWithPassword userId =
   infoWithPassword "http://dshevchenko.biz/denis_avatar.png"
 
 
-main =
+initLogin :: IO()
+initLogin =
   let userId = 1234
       infoWithLogin = storeLoginIn userInfo userId
       infoWithPassword = storePasswordIn infoWithLogin userId

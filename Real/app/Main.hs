@@ -1,6 +1,7 @@
 module Main where
 
 import Lib
+import Login
 
 simpleSum :: Int -> Int
 simpleSum value = value + value
@@ -22,4 +23,5 @@ prepareLength line =
 
 
 main :: IO ()
-main = putStrLn (show (simpleSum 4))
+-- main = putStrLn (show (simpleSum 4))
+main = initLogin
